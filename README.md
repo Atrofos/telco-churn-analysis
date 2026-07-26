@@ -159,6 +159,30 @@ justified. At a 7:1 cost ratio, occasionally offering a discount to a
 convincing lookalike is a price worth paying to catch the real churners who
 share that profile.
 
+## Trying it on fresh customers
+
+To check the finished pipeline end to end, `generate_test_data.py` makes a batch
+of synthetic customers (raw, unlabelled, the same messy shape as the original
+file) and `predict.py` scores them into a ranked worklist. This is a plumbing
+test, not a performance test: the customers are made up, so it proves the
+pipeline handles raw input correctly and produces sensible rankings, not that
+the model is accurate (the held-out test set already covers that).
+
+Seeded into the batch were three hand-built edge cases, and they landed exactly
+where their profiles say they should:
+
+- A brand-new customer on a month-to-month fibre plan came out as the single
+  highest risk in the whole batch (0.89), right at the top of the worklist.
+- A long-tenured customer on a two-year contract with every service came out
+  near the very bottom (0.06).
+- A no-internet customer on a one-year contract also scored low (0.07).
+
+So a customer built to look like a churner rose to the top, and customers built
+to look loyal sank to the bottom, on data the model had never seen. The output
+is sorted highest-risk-first, so a retention team with budget for the top 20
+customers just works down from the top; the flag is the cutoff, but the ranking
+is what you actually act on.
+
 ## Final remarks
 
 The model does what it set out to do: it produces a ranked, business-costed,
@@ -176,6 +200,29 @@ What the project demonstrates end to end: careful data cleaning driven by
 understanding rather than reflex, feature decisions tested rather than assumed,
 an imbalance strategy chosen on evidence, a threshold tied to real cost, and
 predictions that can be explained one customer at a time.
+
+## Project structure
+
+```
+telco-churn-analysis/
+├── notebooks/
+│   └── eda.ipynb              exploratory analysis, every decision starts here
+├── data/
+│   ├── raw/                   the Telco dataset (committed)
+│   ├── processed/             cleaned and encoded data (generated, gitignored)
+│   └── test/                  synthetic customers for prediction (generated, gitignored)
+├── models/                    saved model bundle (generated, gitignored)
+├── analysis/                  charts (committed, the README renders them)
+├── data_cleaning.py           fixes the TotalCharges trap, collapses categories, encodes target
+├── feature_selection.py       encoding and redundancy handling
+├── model_training.py          trains, compares, calibrates, sets threshold, saves best model
+├── explain_model.py           SHAP explanations
+├── generate_test_data.py      synthetic customers to exercise the predictor
+├── predict.py                 scores new customers into a ranked worklist
+├── run.py                     orchestrates the stages with toggles
+├── .gitignore
+└── README.md
+```
 
 ## Running it
 
