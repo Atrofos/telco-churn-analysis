@@ -1,0 +1,20 @@
+# Generated data and artifacts
+data/processed/
+data/test/
+models/
+*.pkl
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Visual Studio
+.vs/
+*.sln
+*.slnx
+*.pyproj
+*.pyproj.user
+
+# OS
+Thumbs.db
