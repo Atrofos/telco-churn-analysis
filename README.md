@@ -189,12 +189,11 @@ The model does what it set out to do: it produces a ranked, business-costed,
 explainable list of at-risk customers. A retention team could take the top of
 that list, read why each person was flagged, and tailor the offer accordingly.
 
-A few honest limits worth stating. The model is trained on one company's
-snapshot, so the specific patterns are theirs, so a different telecom might behave
-differently, and testing that would need a genuinely different dataset with real
-outcomes (a good candidate for a follow-up). The cost ratio, while grounded in
-the data, still rests on an assumed discount depth, so the threshold should be
-revisited with real retention figures.
+A few honest limits are worth stating. 
+
+The model is trained on one company's snapshot, so the specific patterns are theirs, so a different telecom might behave
+differently, and testing that would need a genuinely different dataset with real outcomes (a good candidate for a follow-up). The cost ratio, while grounded in
+the data, still rests on an assumed discount depth, so the threshold should be revisited with real retention figures.
 
 What the project demonstrates end to end: careful data cleaning driven by
 understanding rather than reflex, feature decisions tested rather than assumed,
